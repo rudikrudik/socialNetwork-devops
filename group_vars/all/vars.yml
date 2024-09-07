@@ -34,6 +34,6 @@ app_env:
   - name: SECRET_KEY
     value: "{{ app.key }}"
   - name: ALGORITHM
-    value: HS265
+    value: HS256
 
 git_pach: ~/repository
