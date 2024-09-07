@@ -1,0 +1,9 @@
+---
+- name: Deploy Services
+  ansible.builtin.include_tasks:
+    file: "../services/{{ item.name }}/service.yml"
+  tags: always 
+  vars:
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
+  loop: "{{ services }}"

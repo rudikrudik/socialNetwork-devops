@@ -1,0 +1,17 @@
+---
+- name: "Service -> [{{ name }}]"
+  community.docker.docker_container:
+    name: "{{ name }}"
+    image: "{{ name }}"
+    state: started
+    volumes:
+      - "{{ db_path }}:/var/lib/postgresql/data"
+    restart: yes
+    restart_policy: unless-stopped
+    ports:
+      - "5432:5432"
+    hostname: postresqlServer
+    env:
+      POSTGRES_PASSwORD: "{{ postgres.password }}"
+      POSTGRES_USER: "{{ postgres.user }}"
+      POSTGRES_HOST_AUTH_METHOD: "trust"

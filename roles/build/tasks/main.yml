@@ -1,0 +1,24 @@
+---
+- name: Clone git repository app
+  ansible.builtin.git:
+    repo: "https://github.com/rudikrudik/socialNetwork.git"
+    dest: "{{ git_pach }}"
+    force: true
+
+- name: "Create config Service -> [app]"
+  ansible.builtin.template:
+    src: "templates/.env.j2"
+    dest: "{{ git_pach }}/backend/.env"
+
+- name: Build docker image app
+  community.docker.docker_image:
+    name: "{{ item.name }}"
+    build:
+      path: "{{ git_pach }}/backend"
+    source: build
+  loop: "{{ build_services }}"
+
+- name: Remove repository
+  ansible.builtin.file:
+    path: "{{ git_pach }}"
+    state: absent

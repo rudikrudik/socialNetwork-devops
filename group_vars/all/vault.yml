@@ -1,0 +1,7 @@
+---
+postgres:
+  user: admin
+  password: admin
+
+app:
+  key: gV64m9aIzFG4qpgVphvQbPQrtAO0nM-7YwwOvu0XPt5KJOjAy4AfgLkqJXYEt

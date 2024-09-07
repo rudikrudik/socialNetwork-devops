@@ -1,0 +1,9 @@
+---
+- name: "Deploy service -> [{{ name }}]"
+  ansible.builtin.docker_container:
+    name: "{{ name }}"
+    image: "{{ name }}"
+    state: started
+    ports:
+      - "8000:8000"
+  tags: "{{ name }}"

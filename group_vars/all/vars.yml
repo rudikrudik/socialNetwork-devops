@@ -1,0 +1,39 @@
+---
+# Service for deploy
+services:
+  - name: postgres
+    version: latest
+  - name: app
+    version: latest
+
+build_services:
+  - name: app
+    version: latest
+
+
+# Vars for database
+db_path: /var/dase-data/
+
+db_env:
+  password: "{{ postgres.password }}"
+  user: "{{ postgres.user }}"
+
+
+# Var for api service 
+app_env:
+  - name: DB_HOST
+    value: 192.168.0.120
+  - name: DB_PORT
+    value: 5432
+  - name: DB_NAME
+    value: api
+  - name: DB_USER
+    value: "{{ postgres.user }}"
+  - name: DB_PASSWORD
+    value: "{{ postgres.password }}"
+  - name: SECRET_KEY
+    value: "{{ app.key }}"
+  - name: ALGORITHM
+    value: HS265
+
+git_pach: ~/repository
