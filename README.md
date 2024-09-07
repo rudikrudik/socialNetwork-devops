@@ -16,6 +16,7 @@
 - python 3.9
 - ansible
 - docker
+- openssl
 
 ## <a id="technologies">Технологии</a>
 - docker, docker build, postgreSQL, ansible
