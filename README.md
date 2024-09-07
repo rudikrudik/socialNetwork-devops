@@ -30,7 +30,7 @@ git clone https://github.com/rudikrudik/socialNetwork-devops.git
 ```
 cd socialNetwork-devops
 ```
-- Изменить файл <b>group_vars/all/vault.yml</b> поставив значения соединения с БД и jwt ключ
+- Изменить файл <b>group_vars/all/vault.yml</b> поставив значения соединения с БД и сгенерировать ключ <b>openssl rand -hex 32</b>
 - В файле inventory указать ip адрес сервера
   - Сборка докер образа и запуск происходит на одной машине 
 
