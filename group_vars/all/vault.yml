@@ -1,5 +1,6 @@
 ---
 postgres:
+  superuser: ADMIN
   user: admin
   password: admin
 

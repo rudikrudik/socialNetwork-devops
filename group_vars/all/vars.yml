@@ -15,6 +15,7 @@ build_services:
 db_path: /var/dase-data/
 
 db_env:
+  super_user_password: "{{ postgres.superuser}}"
   password: "{{ postgres.password }}"
   user: "{{ postgres.user }}"
 
@@ -34,6 +35,6 @@ app_env:
   - name: SECRET_KEY
     value: "{{ app.key }}"
   - name: ALGORITHM
-    value: HS265
+    value: HS256
 
 git_pach: ~/repository
