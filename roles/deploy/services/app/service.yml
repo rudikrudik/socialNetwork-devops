@@ -3,7 +3,13 @@
   ansible.builtin.docker_container:
     name: "{{ name }}"
     image: "{{ name }}"
-    state: started
+    recreate: true
     ports:
       - "8000:8000"
+    healthcheck:
+      test: curl -s http://localhost:8000 || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
   tags: "{{ name }}"
