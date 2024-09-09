@@ -15,6 +15,7 @@
     name: "{{ item.name }}"
     build:
       path: "{{ git_pach }}/backend"
+    force_source: true
     source: build
   loop: "{{ build_services }}"
 
