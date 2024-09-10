@@ -38,7 +38,7 @@ cd socialNetwork-devops
 ## <a id="tag_methods">Теги запуска playbook</a>
 ```
 main.yml # подготавливает систему, собирает и разворачивает сервис
-main.yml --tags="build" # сборрка обазов 
+main.yml --tags="build" # сборка обазов 
 main.yml --tags="deploy" # выкладка сервисов app и postgresql
 main.yml --tags="name" = сборка и выкладка одного сервиса, вместо name подставить нужный 
 ```
