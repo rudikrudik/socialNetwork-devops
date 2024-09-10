@@ -2,7 +2,7 @@
 # Service for deploy
 services:
   - name: postgres
-    version: latest
+    version: 12.20-alpine
   - name: app
     version: latest
 
@@ -12,10 +12,11 @@ build_services:
 
 
 # Vars for database
-db_path: /var/dase-data/
+db_path: /var/base-data
+sql_pach: /var/base-init
 
 db_env:
-  super_user_password: "{{ postgres.superuser}}"
+  db_data: api
   password: "{{ postgres.password }}"
   user: "{{ postgres.user }}"
 
@@ -27,14 +28,15 @@ app_env:
   - name: DB_PORT
     value: 5432
   - name: DB_NAME
-    value: api
+    value: "{{ db_env.db_data }}"
   - name: DB_USER
-    value: "{{ postgres.user }}"
+    value: "{{ db_env.user }}"
   - name: DB_PASSWORD
-    value: "{{ postgres.password }}"
+    value: "{{ db_env.password }}"
   - name: SECRET_KEY
     value: "{{ app.key }}"
   - name: ALGORITHM
     value: HS256
 
+# Var to repository
 git_pach: ~/repository
