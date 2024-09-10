@@ -53,7 +53,3 @@ main.yml --tags="name" = сборка и выкладка одного серв�
 - Бахман Рудольф - DevOps engineer
   - telegram - https://t.me/rudik_rudik
   - email - rudik.login@gmail.com
-
-
-
-

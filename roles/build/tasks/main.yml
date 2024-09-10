@@ -1,5 +1,5 @@
 ---
-- name: Clone git repository app
+- name: Clone git repository
   ansible.builtin.git:
     repo: "https://github.com/rudikrudik/socialNetwork.git"
     dest: "{{ git_pach }}"
@@ -15,6 +15,7 @@
     name: "{{ item.name }}"
     build:
       path: "{{ git_pach }}/backend"
+    force_source: true
     source: build
   loop: "{{ build_services }}"
 
