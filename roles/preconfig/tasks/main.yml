@@ -1,8 +1,5 @@
 ---
 - block:
-  - name: Ping host
-    ansible.builtin.ping:
-
   - name: Set Hostname
     ansible.builtin.hostname:
       name: otusHighLoadServer
