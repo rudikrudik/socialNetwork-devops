@@ -16,7 +16,7 @@ db_path: /var/base-data
 sql_pach: /var/base-init
 
 db_env:
-  db_data: api
+  db_base: api
   password: "{{ postgres.password }}"
   user: "{{ postgres.user }}"
 
@@ -28,7 +28,7 @@ app_env:
   - name: DB_PORT
     value: 5432
   - name: DB_NAME
-    value: "{{ db_env.db_data }}"
+    value: "{{ db_env.db_base }}"
   - name: DB_USER
     value: "{{ db_env.user }}"
   - name: DB_PASSWORD
