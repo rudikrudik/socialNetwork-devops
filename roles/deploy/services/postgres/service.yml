@@ -11,13 +11,12 @@
       name: "{{ name }}"
       image: "{{ name }}:{{ version }}"
       recreate: true
-      state: startedbbb
+      state: started
       restart: yes
       ports:
         - "5432:5432"
       hostname: postresqlServer
       env:
-        POSTGRES_DB: "{{ db_env.db_data }}"
         POSTGRES_USER: "{{ db_env.user }}"
         POSTGRES_PASSWORD: "{{ db_env.password }}"
         PGDATA: "/var/lib/postgresql/data"
@@ -25,10 +24,10 @@
         - "{{ sql_pach }}:/docker-entrypoint-initdb.d"
         - "{{ db_path }}:/var/lib/postgresql/data"
       healthcheck:
-        test: ["CMD-SHELL", "pg_isready -U {{ db_env.user }} -d {{ db_env.db_data }}"]
+        test: ["CMD-SHELL", "pg_isready -U {{ db_env.user }} -d {{ db_env.db_base }}"]
         interval: 10s
         timeout: 5s
         retries: 5
-        start_period: 10s
+        start_period: 20s
       restart_policy: unless-stopped
   tags: "{{ name }}"
