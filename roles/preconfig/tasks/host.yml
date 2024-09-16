@@ -1,0 +1,22 @@
+---
+- name: Set Hostname
+  ansible.builtin.hostname:
+    name: "{{ host_name }}"
+
+- name: Set timezone
+  community.general.timezone:
+    name: Europe/Moscow
+
+- name: Set 24 format time
+  command: "localectl set-locale LC_TIME='en_GB.UTF-8'"
+
+- name: Create DB directory base
+  ansible.builtin.file:
+    path: "{{ db_path }}"
+    state: directory
+
+- name: Create DB init sql script base
+  ansible.builtin.file:
+    path: "{{ sql_pach }}"
+    state: directory
+    mode: "0777"
