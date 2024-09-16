@@ -1,0 +1,63 @@
+---
+- block:
+  - name: Update cache packages
+    ansible.builtin.apt:
+      update_cache: true
+
+  rescue:
+    - name: Delete old docker repo key
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/docker.list
+        state: absent
+
+- name: Update cache packages
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install Curl, Ca-certificates and Python3-pip
+  ansible.builtin.apt:
+    name:
+      - curl
+      - ca-certificates
+      - python3-pip
+    state: present
+
+- name: Pip install docker
+  pip:
+    name: docker
+    state: present
+
+- name: Add Docker GPG Key
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add docker repository into sources list
+  ansible.builtin.apt_repository:
+    repo: > 
+      deb [arch=amd64] https://download.docker.com/linux/ubuntu
+      "{{ ansible_lsb.codename }}" stable
+    state: present
+    filename: docker
+
+- name: Docker and docker requeries
+  ansible.builtin.apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+  
+- name: Add group permission to docker user
+  ansible.builtin.user:
+    name: docker
+    groups:
+      - docker
+      - sudo
+    append: true
+
+- name: Add group localuser to docker group
+  ansible.builtin.user:
+    name: "{{ user_name }}"
+    groups: docker

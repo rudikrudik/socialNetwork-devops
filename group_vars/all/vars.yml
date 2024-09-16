@@ -40,3 +40,9 @@ app_env:
 
 # Var to repository
 git_pach: ~/repository
+
+# Hostname var
+host_name: otusHighLoad
+
+# User name
+user_name: rudik
