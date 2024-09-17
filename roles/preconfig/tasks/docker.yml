@@ -57,7 +57,7 @@
       - sudo
     append: true
 
-- name: Add group localuser to docker group
+- name: Add localuser to docker group
   ansible.builtin.user:
     name: "{{ user_name }}"
     groups: docker
