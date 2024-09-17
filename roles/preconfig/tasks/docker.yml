@@ -60,4 +60,6 @@
 - name: Add localuser to docker group
   ansible.builtin.user:
     name: "{{ user_name }}"
-    groups: docker
+    groups: 
+      - docker
+      - sudo
