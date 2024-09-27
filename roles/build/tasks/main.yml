@@ -5,6 +5,17 @@
     dest: "{{ git_pach }}"
     force: true
 
+- name: Delete old sql init files
+  ansible.builtin.command:
+    cmd: "rm -rf {{ sql_pach }}/*"
+
+- name: Copy files to init db
+  ansible.builtin.copy:
+    src: "{{ git_pach }}/backend/migrate/"
+    dest: "{{ sql_pach }}"
+    remote_src: true
+    force: true
+
 - name: "Create config Service -> [app]"
   ansible.builtin.template:
     src: "templates/.env.j2"

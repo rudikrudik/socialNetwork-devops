@@ -1,11 +1,5 @@
 ---
-
 - block:
-  - name: Wget init database sql script
-    ansible.builtin.get_url:
-      url: "https://raw.githubusercontent.com/rudikrudik/socialNetwork/master/backend/create_db.sql"
-      dest: "{{ sql_pach }}/create_db.sql"
-
   - name: "Service -> [{{ name }}]"
     community.docker.docker_container:
       name: "{{ name }}"
