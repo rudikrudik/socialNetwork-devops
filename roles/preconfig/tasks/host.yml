@@ -19,4 +19,3 @@
   ansible.builtin.file:
     path: "{{ sql_pach }}"
     state: directory
-    mode: "0777"

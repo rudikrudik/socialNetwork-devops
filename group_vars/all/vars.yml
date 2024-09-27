@@ -12,8 +12,8 @@ build_services:
 
 
 # Vars for database
-db_path: /var/base-data
-sql_pach: /var/base-init
+db_path: ~/base-data
+sql_pach: ~/base-init
 
 db_env:
   db_base: api
