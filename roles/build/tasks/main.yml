@@ -1,36 +1,18 @@
 ---
-- name: Clone git repository
-  ansible.builtin.git:
-    repo: "https://github.com/rudikrudik/socialNetwork.git"
-    dest: "{{ git_pach }}"
-    force: true
+- name: Build Databases
+  ansible.builtin.include_tasks:
+    file: db.yml
+  when: 
+    - inventory_hostname in groups["dbservers"]
 
-- name: Delete old sql init files
-  ansible.builtin.command:
-    cmd: "rm -rf {{ sql_pach }}/*"
+- name: Build Backends
+  ansible.builtin.include_tasks:
+    file: backend.yml
+  when: 
+    - inventory_hostname in groups["backend"]
 
-- name: Copy files to init db
-  ansible.builtin.copy:
-    src: "{{ git_pach }}/backend/migrate/"
-    dest: "{{ sql_pach }}"
-    remote_src: true
-    force: true
-
-- name: "Create config Service -> [app]"
-  ansible.builtin.template:
-    src: "templates/.env.j2"
-    dest: "{{ git_pach }}/backend/.env"
-
-- name: Build docker image app
-  community.docker.docker_image:
-    name: "{{ item.name }}"
-    build:
-      path: "{{ git_pach }}/backend"
-    force_source: true
-    source: build
-  loop: "{{ build_services }}"
-
-- name: Remove repository
-  ansible.builtin.file:
-    path: "{{ git_pach }}"
-    state: absent
+- name: Build Frontends
+  ansible.builtin.include_tasks:
+    file: frontend.yml
+  when: 
+    - inventory_hostname in groups["frontend"]

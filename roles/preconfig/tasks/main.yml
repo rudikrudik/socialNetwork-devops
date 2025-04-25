@@ -1,6 +1,6 @@
 ---
 - block:
-  - name: Include docker
+  - name: Include host
     ansible.builtin.include_tasks:
       file: host.yml
 

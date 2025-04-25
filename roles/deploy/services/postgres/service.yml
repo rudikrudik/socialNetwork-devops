@@ -9,7 +9,7 @@
       restart: yes
       ports:
         - "5432:5432"
-      hostname: postresqlServer
+      hostname: "{{ name }}"
       env:
         POSTGRES_USER: "{{ db_env.user }}"
         POSTGRES_PASSWORD: "{{ db_env.password }}"

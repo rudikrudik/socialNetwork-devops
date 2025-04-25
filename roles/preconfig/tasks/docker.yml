@@ -22,11 +22,6 @@
       - python3-pip
     state: present
 
-- name: Pip install docker
-  pip:
-    name: docker
-    state: present
-
 - name: Add Docker GPG Key
   ansible.builtin.apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
@@ -39,6 +34,11 @@
       "{{ ansible_lsb.codename }}" stable
     state: present
     filename: docker
+
+#- name: Apt install docker
+#  ansible.builtin.apt:
+#    name: docker
+#    state: present
 
 - name: Docker and docker requeries
   ansible.builtin.apt:

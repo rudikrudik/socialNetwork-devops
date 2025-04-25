@@ -1,10 +1,10 @@
 ---
-- name: Preconfig server
-  hosts: main
+- name: Preconfig all servers 
+  hosts: all
   roles:
     - role: preconfig
       tags: preconfig
     - role: build
-      tags: build      
+      tags: build
     - role: deploy
       tags: deploy
