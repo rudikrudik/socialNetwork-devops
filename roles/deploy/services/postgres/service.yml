@@ -24,4 +24,6 @@
         retries: 5
         start_period: 20s
       restart_policy: unless-stopped
+  when: 
+    - inventory_hostname in groups["dbservers"]
   tags: "{{ name }}"

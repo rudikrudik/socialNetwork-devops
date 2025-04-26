@@ -1,7 +1,7 @@
 ---
 - name: Set Hostname
   ansible.builtin.hostname:
-    name: "{{ host_name }}"
+    name: "{{ inventory_hostname }}"
 
 - name: Set timezone
   community.general.timezone:
@@ -9,18 +9,3 @@
 
 - name: Set 24 format time
   command: "localectl set-locale LC_TIME='en_GB.UTF-8'"
-
-
-- block:
-  - name: Create DB directory base on ["{{ host_name }}"]
-    ansible.builtin.file:
-      path: "{{ db_path }}"
-      state: directory
-      
-
-  - name: Create DB init sql script base on ["{{ host_name }}"]
-    ansible.builtin.file:
-      path: "{{ sql_pach }}"
-      state: directory
-  when: 
-    - inventory_hostname in groups["dbservers"]

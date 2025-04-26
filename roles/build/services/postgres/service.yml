@@ -1,0 +1,26 @@
+---
+- block:
+  - name: Clone git repository
+    ansible.builtin.git:
+      repo: "https://github.com/rudikrudik/socialNetwork.git"
+      dest: "{{ git_pach }}"
+      force: true
+
+  - name: Delete old sql init files
+    ansible.builtin.command:
+      cmd: "rm -rf {{ sql_pach }}/*"
+  
+  - name: Copy files to init db
+    ansible.builtin.copy:
+      src: "{{ git_pach }}/postgres/"
+      dest: "{{ sql_pach }}"
+      remote_src: true
+      force: true
+
+  - name: Remove repository
+    ansible.builtin.file:
+      path: "{{ git_pach }}"
+      state: absent
+  when: 
+    - inventory_hostname in groups["dbservers"]
+  tags: "{{ name }}"

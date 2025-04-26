@@ -1,0 +1,4 @@
+---
+- name: Print for ["{{ inventory_hostname }}"]
+  ansible.builtin.debug:
+    msg: Print data from build "{{ inventory_hostname }}"

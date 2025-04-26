@@ -1,0 +1,7 @@
+---
+- name: Print for ["{{ inventory_hostname }}"]
+  ansible.builtin.debug:
+    msg: Print data from deploy "{{ inventory_hostname }}"
+  when: 
+    - inventory_hostname in groups["frontend"]
+  tags: "{{ name }}"

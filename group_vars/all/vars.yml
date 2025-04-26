@@ -1,19 +1,24 @@
 ---
 # Service for deploy
-services:
+deploy_services:
   - name: postgres
     version: 12.20-alpine
-  - name: app
+  - name: app_backend
+    version: latest
+  - name: app_frontend
     version: latest
 
 build_services:
-  - name: app
+  - name: postgres
+    version: 12.20-alpine
+  - name: app_backend
+    version: latest
+  - name: app_frontend
     version: latest
 
-
-# Vars for database
-db_path: ~/base-data
-sql_pach: ~/base-init
+# Vars for database # default home catalog
+db_path: /home/rudik/base-data
+sql_pach: /home/rudik/base-init
 
 db_env:
   db_base: api
@@ -22,7 +27,7 @@ db_env:
 
 
 # Var for api service 
-app_env:
+app_backend_env:
   - name: DB_HOST
   # Take ip from inventory
     value: 192.168.0.150
@@ -39,11 +44,8 @@ app_env:
   - name: ALGORITHM
     value: HS256
 
-# Var to repository
-git_pach: ~/repository
-
-# Hostname var
-host_name: otusHighLoad
+# Var to repository user home catalog
+git_pach: /home/rudik/repository
 
 # User name
 user_name: rudik

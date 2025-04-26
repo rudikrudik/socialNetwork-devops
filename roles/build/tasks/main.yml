@@ -1,18 +1,9 @@
 ---
-- name: Build Databases
+- name: Build Services
   ansible.builtin.include_tasks:
-    file: db.yml
-  when: 
-    - inventory_hostname in groups["dbservers"]
-
-- name: Build Backends
-  ansible.builtin.include_tasks:
-    file: backend.yml
-  when: 
-    - inventory_hostname in groups["backend"]
-
-- name: Build Frontends
-  ansible.builtin.include_tasks:
-    file: frontend.yml
-  when: 
-    - inventory_hostname in groups["frontend"]
+    file: "../services/{{ item.name }}/service.yml"
+  tags: always 
+  vars:
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
+  loop: "{{ build_services }}"

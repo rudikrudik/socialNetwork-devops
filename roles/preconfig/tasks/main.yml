@@ -7,4 +7,9 @@
   - name: Include docker
     ansible.builtin.include_tasks:
       file: docker.yml
+
+  - name: Include db
+    ansible.builtin.include_tasks:
+      file: db.yml
+  
   become: true
