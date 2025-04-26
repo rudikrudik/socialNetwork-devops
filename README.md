@@ -7,7 +7,7 @@
 - [Технологии](#technologies)
 - [Начало работы](#start)
 - [Теги запуска playbook](#tag_methods)
-- [TODO](#todo)
+- [To Do](#todo)
 - [Команда проекта](#command)
 
 
@@ -43,7 +43,7 @@ main.yml --tags="deploy" # выкладка сервисов app и postgresql
 main.yml --tags="name" # сборка и выкладка одного сервиса, вместо name подставить нужный 
 ```
 
-## <a id="todo">Todo</a>
+## <a id="todo">To do</a>
 - ~~health check для контейнеров~~
 - ~~SQL скрипт создания базы, таблиц~~
 - ~~SQL скрипт тестовых данных~~
