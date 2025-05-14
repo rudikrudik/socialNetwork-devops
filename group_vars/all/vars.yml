@@ -8,6 +8,8 @@ deploy_services:
   - name: app_frontend
     version: latest
 
+
+# Service for build
 build_services:
   - name: postgres
     version: 12.20-alpine
@@ -15,6 +17,14 @@ build_services:
     version: latest
   - name: app_frontend
     version: latest
+
+# Monitoring
+monitoring_services:
+  - name: zabbix-agent-app
+    version: latest
+  - name: zabbix-agent-db
+    version: latest
+  
 
 # Vars for database # default home catalog
 db_path: /home/rudik/base-data
@@ -49,3 +59,6 @@ git_pach: /home/rudik/repository
 
 # User name
 user_name: rudik
+
+# For zabbix agent
+zabbix_server: 192.168.0.250

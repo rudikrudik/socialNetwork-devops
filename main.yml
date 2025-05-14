@@ -8,3 +8,5 @@
       tags: build
     - role: deploy
       tags: deploy
+    - role: zabbix-agent
+      tags: zabbix-agent

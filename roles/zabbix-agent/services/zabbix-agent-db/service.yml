@@ -1,0 +1,7 @@
+---
+- name: Service "{{ name }}"
+  ansible.builtin.debug:
+    msg: "Hello from zabbix-agent-db"
+  when: 
+    - inventory_hostname in groups["dbservers"]
+  tags: "{{ name }}"
