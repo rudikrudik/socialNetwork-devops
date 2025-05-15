@@ -5,3 +5,7 @@ postgres:
 
 app:
   key: api-key
+
+zabbix_agent_db:
+  user: zbx_monitor
+  password: zbx_monitor

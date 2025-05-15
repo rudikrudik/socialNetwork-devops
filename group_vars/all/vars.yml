@@ -25,6 +25,10 @@ monitoring_services:
   - name: zabbix-agent-db
     version: latest
   
+# Default zabbix agent image
+monitoring_images:
+  - name: zabbix-agent
+  - version: latest  
 
 # Vars for database # default home catalog
 db_path: /home/rudik/base-data
@@ -56,6 +60,9 @@ app_backend_env:
 
 # Var to repository user home catalog
 git_pach: /home/rudik/repository
+
+# Default directory to build images zabbix agent postgres
+def_path: /home/rudik/src
 
 # User name
 user_name: rudik

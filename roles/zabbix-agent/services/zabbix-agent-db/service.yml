@@ -1,7 +1,46 @@
 ---
-- name: Service "{{ name }}"
-  ansible.builtin.debug:
-    msg: "Hello from zabbix-agent-db"
+- block:
+  - name: Service "{{ name }}"
+    ansible.builtin.debug:
+      msg: "Hello from zabbix-agent-db"
+
+  - name: Copy docker file
+    ansible.builtin.copy:
+      src: Dockerfile
+      dest: "{{ def_path }}"
+
+  - name: Copy zabbix agent postgreSql file
+    ansible.builtin.git:
+      repo: "https://github.com/zabbix/zabbix.git"
+      dest: "{{ def_path }}/zabbix-repo"
+      update: yes
+      force: yes
+
+  - name: Add check table rows
+    ansible.builtin.shell: /usr/bin/echo UserParameter=pgsql.count[*], psql -qtAX postgresql://'"$3"':'"$4"'@'"$1"':'"$2"'/'"$5"' -c '"SELECT count(id) FROM '\$6'"' >> {{ def_path }}/zabbix-repo/templates/db/postgresql_agent/template_db_postgresql.conf
+
+  - name: Build docker image for monitoring postgres
+    community.docker.docker_image:
+      name: "{{ name }}"
+      build:
+        path: "{{ def_path }}"
+      force_source: true
+      source: build
+
+  - name: "Deploy monitoring service -> [{{ name }}]"
+    ansible.builtin.docker_container:
+      name: "{{ name }}"
+      image: "{{ name }}"
+      state: started
+      restart: yes
+      recreate: true
+      hostname: "{{ name }}ZabbixAgent"
+      env:
+        ZBX_HOSTNAME: "{{ name }}"
+        ZBX_SERVER_HOST: "{{ zabbix_server }}"
+      ports:
+        - "10050:10050"
+      restart_policy: unless-stopped
   when: 
     - inventory_hostname in groups["dbservers"]
   tags: "{{ name }}"

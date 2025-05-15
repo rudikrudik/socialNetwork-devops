@@ -10,3 +10,7 @@
       tags: deploy
     - role: zabbix-agent
       tags: zabbix-agent
+
+# add to initdb script
+#CREATE USER zbx_monitor WITH PASSWORD '<PASSWORD>' INHERIT;
+#GRANT pg_monitor TO zbx_monitor;

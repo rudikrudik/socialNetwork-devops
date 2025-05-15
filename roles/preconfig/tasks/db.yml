@@ -9,6 +9,15 @@
       mode: "0766"
       recurse: yes
       
+  - name: Create SRC directory base on ["{{ inventory_hostname }}", "{{ ansible_host }}"]
+    ansible.builtin.file:
+      path: "{{ def_path }}"
+      state: directory
+      owner: "{{ user_name }}"
+      group: "{{ user_name }}"
+      mode: "0766"
+      recurse: yes
+
   - name: Create DB init sql script base on ["{{ inventory_hostname }}", "{{ ansible_host }}"]
     ansible.builtin.file:
       path: "{{ sql_pach }}"
