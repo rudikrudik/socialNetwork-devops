@@ -13,8 +13,8 @@
       retries: 5
       start_period: 10s
 
-- name: "Remove not tageg images"
-  command: 'docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
+#- name: "Remove not tageg images"
+#  command: 'docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
      
   when: 
     - inventory_hostname in groups["backend"]
