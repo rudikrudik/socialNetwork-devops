@@ -7,6 +7,9 @@ deploy_services:
     version: latest
   - name: app_frontend
     version: latest
+  - name: nginx
+    version: latest
+
 
 
 # Service for build
@@ -16,6 +19,8 @@ build_services:
   - name: app_backend
     version: latest
   - name: app_frontend
+    version: latest
+  - name: nginx
     version: latest
 
 # Monitoring

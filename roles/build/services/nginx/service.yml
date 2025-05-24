@@ -1,0 +1,53 @@
+---
+- block:
+  - name: Print for ["{{ inventory_hostname }}"]
+    ansible.builtin.debug:
+      msg: Print data from build "{{ inventory_hostname }}"
+
+  - name: Create dir to src files
+    ansible.builtin.file:
+      path: "{{ git_pach }}"
+      state: absent
+
+  - name: Get nginx module STS
+    ansible.builtin.git:
+      repo: "https://github.com/vozlt/nginx-module-sts.git"
+      dest: "{{ git_pach }}/src/nginx-module-sts"
+
+  - name: Get nginx module stream STS
+    ansible.builtin.git:
+      repo: "https://github.com/vozlt/nginx-module-stream-sts.git"
+      dest: "{{ git_pach }}/src/nginx-module-stream-sts"
+
+  - name: Get nginx src
+    ansible.builtin.git:
+      repo: "https://github.com/nginx/nginx.git"
+      dest: "{{ git_pach }}/src/nginx"
+
+  - name: Copy Dockerfile
+    ansible.builtin.copy:
+      src: "Dockerfile"
+      dest: "{{ git_pach }}/Dockerfile"
+  
+  - name: Copy Nginx.conf
+    ansible.builtin.copy:
+      src: "nginx.conf"
+      dest: "{{ git_pach }}/nginx.conf"
+
+  - name: Copy Nginx_stat.conf
+    ansible.builtin.copy:
+      src: "nginx_stat.conf"
+      dest: "{{ git_pach }}/nginx_stat.conf"
+
+  - name: Build nginx image
+    community.docker.docker_image:
+      name: "{{ name }}"
+      build:
+        path: "{{ git_pach }}"
+      force_source: true
+      source: build
+
+  when: 
+    - inventory_hostname in groups["web"]
+
+  tags: "{{ name }}"

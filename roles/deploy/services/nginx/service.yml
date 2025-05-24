@@ -1,0 +1,14 @@
+---
+- name: "Deploy service -> [{{ name }}]"
+  ansible.builtin.docker_container:
+    name: "{{ name }}"
+    image: "{{ name }}"
+    recreate: true
+    ports:
+      - "8000:8000"
+      - "8888:8888"
+    hostname: "{{ name }}"
+
+  when: 
+    - inventory_hostname in groups["web"]
+  tags: "{{ name }}"
