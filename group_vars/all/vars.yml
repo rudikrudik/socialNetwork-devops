@@ -2,7 +2,7 @@
 # Service for deploy
 deploy_services:
   - name: postgres
-    version: 12.20-alpine
+    version: latest
   - name: app_backend
     version: latest
   - name: app_frontend
@@ -10,12 +10,10 @@ deploy_services:
   - name: nginx
     version: latest
 
-
-
 # Service for build
 build_services:
   - name: postgres
-    version: 12.20-alpine
+    version: latest
   - name: app_backend
     version: latest
   - name: app_frontend
@@ -33,7 +31,14 @@ monitoring_services:
 # Default zabbix agent image
 monitoring_images:
   - name: zabbix-agent
-  - version: latest  
+  - version: latest
+
+# HA postgres cluster ["HaProxy", "ETCD", "Patrony"]
+pd_cluster:
+  - name: haproxy
+    version: latest
+  - name: etcd
+    version: 3.5.21
 
 # Vars for database # default home catalog
 db_path: /home/rudik/base-data
@@ -49,9 +54,11 @@ db_env:
 app_backend_env:
   - name: DB_HOST
   # Take ip from inventory
-    value: 192.168.0.150
-  - name: DB_PORT
-    value: 5432
+    value: 192.168.0.198
+  - name: DB_PORT_READ
+    value: 5001
+  - name: DB_PORT_WRITE
+    value: 5000
   - name: DB_NAME
     value: "{{ db_env.db_base }}"
   - name: DB_USER
@@ -68,6 +75,9 @@ git_pach: /home/rudik/repository
 
 # Default directory to build images zabbix agent postgres
 def_path: /home/rudik/src
+
+# Default directory to build image for postgres/patroni
+patroni_path: /home/rudik/patroni
 
 # User name
 user_name: rudik

@@ -1,0 +1,6 @@
+- name: Service "{{ name }}"
+  ansible.builtin.debug:
+    msg: "Hello from temp"
+  when: 
+    - inventory_hostname in groups["sqlbalanser"]
+  tags: "{{ name }}"

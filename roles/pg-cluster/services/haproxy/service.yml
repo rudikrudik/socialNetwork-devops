@@ -1,0 +1,24 @@
+---
+- block:
+  - name: Copy haproxy.cfg
+    ansible.builtin.copy:
+      src: "haproxy.cfg"
+      dest: "~/haproxy.cfg"
+
+  - name: "Deploy service -> [{{ name }}]"
+    ansible.builtin.docker_container:
+      name: "{{ name }}"
+      image: "{{ name }}"
+      recreate: true
+      ports:
+        - "8008:8008"
+        - "7000:7000"
+        - "5000:5000"
+        - "5001:5001"
+      hostname: "{{ name }}"
+      volumes:
+        - "~/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"
+
+  when: 
+    - inventory_hostname in groups["sqlbalanser"]
+  tags: "{{ name }}"

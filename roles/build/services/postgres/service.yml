@@ -21,6 +21,36 @@
     ansible.builtin.file:
       path: "{{ git_pach }}"
       state: absent
+
+  - name: Create Directory to build image postgres-patrony
+    ansible.builtin.file:
+      path: "{{ patroni_path }}"
+      state: directory
+
+  - name: Copy Dockerfile
+    ansible.builtin.copy:
+      src: "Dockerfile"
+      dest: "{{ patroni_path }}/Dockerfile"
+
+  - name: "Make config to patroni"
+    ansible.builtin.template:
+      src: "templates/patroni.j2"
+      dest: "{{ patroni_path }}/patroni.yml"
+
+  - name: Make config Patroni-EntryPoint.sh
+    ansible.builtin.template:
+      src: "patroni-entrypoint.j2"
+      dest: "{{ patroni_path }}/patroni-entrypoint.sh"
+
+  - name: Build Pg-patroni image
+    community.docker.docker_image:
+      name: "{{ name }}"
+      tag: "latest"
+      build:
+        path: "{{ patroni_path }}"
+      force_source: true
+      source: build
+
   when: 
     - inventory_hostname in groups["dbservers"]
   tags: "{{ name }}"

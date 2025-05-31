@@ -1,0 +1,154 @@
+scope: postgres
+name: {{ inventory_hostname  }}
+ 
+restapi:
+    listen: 0.0.0.0:8008
+    connect_address: {{ ansible_default_ipv4.address }}:8008
+ 
+etcd:
+    host: 192.168.0.198:2379
+
+ 
+bootstrap:
+  method: initdb
+  dcs:
+    ttl: 30
+    loop_wait: 10
+    retry_timeout: 10
+    maximum_lag_on_failover: 1048576
+    master_start_timeout: 300
+    synchronous_mode: false
+    synchronous_mode_strict: false
+    synchronous_node_count: 1
+    postgresql:
+      pg_hba:
+      - host replication postgres 127.0.0.1/32 trust
+      {% for host in groups['dbservers'] %}
+      - host replication postgres {{ hostvars[host].ansible_default_ipv4.address }}/24 md5
+      {% endfor %}
+      - host all all 192.168.0.0/24 md5
+      use_pg_rewind: true
+      use_slots: true
+      parameters:
+        max_connections: 500
+        superuser_reserved_connections: 5
+        password_encryption: md5
+        max_locks_per_transaction: 512
+        max_prepared_transactions: 0
+        huge_pages: try
+        shared_buffers: 1972MB
+        effective_cache_size: 5916MB
+        work_mem: 128MB
+        maintenance_work_mem: 256MB
+        checkpoint_timeout: 15min
+        checkpoint_completion_target: 0.9
+        min_wal_size: 2GB
+        max_wal_size: 8GB
+        wal_buffers: 32MB
+        default_statistics_target: 1000
+        seq_page_cost: 1
+        random_page_cost: 1.1
+        effective_io_concurrency: 200
+        synchronous_commit: on
+        autovacuum: on
+        autovacuum_max_workers: 5
+        autovacuum_vacuum_scale_factor: 0.01
+        autovacuum_analyze_scale_factor: 0.01
+        autovacuum_vacuum_cost_limit: 500
+        autovacuum_vacuum_cost_delay: 2
+        autovacuum_naptime: 1s
+        max_files_per_process: 4096
+        archive_mode: on
+        archive_timeout: 1800s
+        archive_command: cd .
+        wal_level: replica
+        wal_keep_size: 2GB
+        max_wal_senders: 10
+        max_replication_slots: 10
+        hot_standby: on
+        wal_log_hints: on
+        wal_compression: on
+        pg_stat_statements.max: 10000
+        pg_stat_statements.track: all
+        pg_stat_statements.track_utility: false
+        pg_stat_statements.save: true
+        auto_explain.log_min_duration: 10s
+        auto_explain.log_analyze: true
+        auto_explain.log_buffers: true
+        auto_explain.log_timing: false
+        auto_explain.log_triggers: true
+        auto_explain.log_verbose: true
+        auto_explain.log_nested_statements: true
+        auto_explain.sample_rate: 0.01
+        track_io_timing: on
+        log_lock_waits: on
+        log_temp_files: 0
+        track_activities: on
+        track_activity_query_size: 4096
+        track_counts: on
+        track_functions: all
+        log_checkpoints: on
+        logging_collector: on
+        log_truncate_on_rotation: on
+        log_rotation_age: 1d
+        log_rotation_size: 0
+        log_line_prefix: '%t [%p-%l] %r %q%u@%d '
+        log_filename: postgresql-%a.log
+        log_directory: /var/log/postgresql
+        hot_standby_feedback: on
+        max_standby_streaming_delay: 30s
+        wal_receiver_status_interval: 10s
+        idle_in_transaction_session_timeout: 10min
+        jit: off
+        max_worker_processes: 24
+        max_parallel_workers: 8
+        max_parallel_workers_per_gather: 2
+        max_parallel_maintenance_workers: 2
+        tcp_keepalives_count: 10
+        tcp_keepalives_idle: 300
+        tcp_keepalives_interval: 30
+        shared_preload_libraries: pg_stat_statements,auto_explain
+
+
+    initdb:  # List options to be passed on to initdb
+      - encoding: UTF8
+      - locale: en_US.UTF-8
+      - data-checksums
+ 
+    pg_hba:
+    - host replication postgres 127.0.0.1/32 trust
+    {% for host in groups['dbservers'] %}
+    - host replication postgres {{ hostvars[host].ansible_default_ipv4.address }}/24 md5
+    {% endfor %}
+    - host all all 192.168.0.0/24 md5
+ 
+  users:
+    admin:
+      password: admin
+      options:
+        - createrole
+        - createdb
+ 
+postgresql:
+  listen: 0.0.0.0:5432
+  connect_address: {{ ansible_default_ipv4.address }}:5432
+  use_unix_socket: true
+  bin_dir: /usr/lib/postgresql/12/bin
+  data_dir: /var/lib/postgresql/data
+  config_dir: /var/lib/postgresql/data
+  pgpass: /tmp/pgpass
+  authentication:
+    replication:
+      username: postgres
+      password: postgres
+    superuser:
+      username: postgres
+      password: postgres
+  parameters:
+    unix_socket_directories: /var/run/postgresql
+ 
+tags:
+    nofailover: false
+    noloadbalance: false
+    clonefrom: false
+    nosync: false

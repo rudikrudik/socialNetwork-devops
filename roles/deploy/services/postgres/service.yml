@@ -9,14 +9,17 @@
       restart: yes
       ports:
         - "5432:5432"
-      hostname: "{{ name }}"
+        - "8008:8008"
+        - "2379:2379"
+      hostname: "{{ inventory_hostname  }}"
       env:
         POSTGRES_USER: "{{ db_env.user }}"
         POSTGRES_PASSWORD: "{{ db_env.password }}"
         PGDATA: "/var/lib/postgresql/data"
       volumes:
         - "{{ sql_pach }}:/docker-entrypoint-initdb.d"
-        - "{{ db_path }}:/var/lib/postgresql/data"
+        - "{{ db_path }}:/var/lib/postgresql/data:Z"
+        - "{{ patroni_path }}/data:/data/patroni:Z"
       healthcheck:
         test: ["CMD-SHELL", "pg_isready -U {{ db_env.user }} -d {{ db_env.db_base }}"]
         interval: 10s
