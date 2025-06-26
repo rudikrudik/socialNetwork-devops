@@ -1,13 +1,17 @@
 ---
-- name: "Deploy service -> [{{ name }}]"
-  ansible.builtin.docker_container:
-    name: "{{ name }}"
-    image: "{{ name }}"
-    recreate: true
-    ports:
-      - "8000:8000"
-      - "8888:8888"
-    hostname: "{{ name }}"
+- block:
+  - name: "Deploy service -> [{{ name }}]"
+    ansible.builtin.docker_container:
+      name: "{{ name }}"
+      image: "{{ name }}"
+      recreate: true
+      ports:
+        - "8000:8000"
+        - "8888:8888"
+      hostname: "{{ name }}"
+
+  - name: "Remove not tagged images"
+    shell: 'docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
 
   when: 
     - inventory_hostname in groups["web"]

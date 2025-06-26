@@ -1,0 +1,20 @@
+---
+- block:  
+  - name: "Deploy service -> [{{ name }}]"
+    ansible.builtin.docker_container:
+      name: "{{ name }}"
+      image: redis
+      command: redis-server --requirepass admin
+      recreate: true
+      ports:
+        - "6380:6379"
+      healthcheck:
+        test: ["CMD", "redis-cli", "ping"]
+        interval: 10s
+        timeout: 5s
+        retries: 3
+        start_period: 5s
+
+  when: 
+    - inventory_hostname in groups["redis"]
+  tags: "{{ name }}"

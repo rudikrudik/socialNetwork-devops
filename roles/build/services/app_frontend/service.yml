@@ -1,4 +1,34 @@
 ---
-- name: Print for ["{{ inventory_hostname }}"]
-  ansible.builtin.debug:
-    msg: Print data from build "{{ inventory_hostname }}"
+- block:
+  - name: Clone git repository
+    ansible.builtin.git:
+      repo: "https://github.com/rudikrudik/socialNetwork.git"
+      dest: "{{ git_pach }}"
+      force: true
+  
+  - name: Create directory to src
+    ansible.builtin.file:
+      path: "{{ def_path }}"
+      state: directory
+
+  - name: Copy Nginx.conf
+    ansible.builtin.copy:
+      src: "nginx.conf"
+      dest: "{{ def_path }}/nginx.conf"
+
+  - name: Build docker image for frontend
+    community.docker.docker_image:
+      name: "{{ name }}"
+      build:
+        path: "{{ git_pach }}/frontend"
+      force_source: true
+      source: build
+
+  - name: Remove repository
+    ansible.builtin.file:
+      path: "{{ git_pach }}"
+      state: absent
+
+  when: 
+    - inventory_hostname in groups["frontend"]
+  tags: "{{ name }}"

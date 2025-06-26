@@ -23,6 +23,7 @@
     ansible.builtin.file:
       path: "{{ git_pach }}"
       state: absent
+      
   when: 
     - inventory_hostname in groups["backend"]
   tags: "{{ name }}"

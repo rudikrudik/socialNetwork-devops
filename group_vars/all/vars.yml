@@ -9,6 +9,8 @@ deploy_services:
     version: latest
   - name: nginx
     version: latest
+  - name: redis_cache
+    version: latest
 
 # Service for build
 build_services:
@@ -49,6 +51,13 @@ db_env:
   password: "{{ postgres.password }}"
   user: "{{ postgres.user }}"
 
+redis_env:
+  redis_db: "{{ redis_cache }}"
+
+  #radis_cache:
+  #user: admin
+  #password: admin
+  #db_name: 0
 
 # Var for api service 
 app_backend_env:
@@ -69,6 +78,16 @@ app_backend_env:
     value: "{{ app.key }}"
   - name: ALGORITHM
     value: HS256
+  - name: REDIS_CACHE_HOST
+    value: 192.168.0.210
+  - name: REDIS_CACHE_LOGIN
+    value: "{{ redis_cache.user }}"
+  - name: REDIS_CACHE_PORT
+    value: 6380
+  - name: REDIS_PASSWORD
+    value: "{{ redis_cache.password }}"
+  - name: REDIS_DB
+    value: "{{ redis_cache.db_name }}"
 
 # Var to repository user home catalog
 git_pach: /home/rudik/repository

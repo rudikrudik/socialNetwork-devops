@@ -3,6 +3,11 @@ postgres:
   user: admin
   password: admin
 
+redis_cache:
+  user: admin
+  password: admin
+  db_name: 0
+
 app:
   key: api-key
 
