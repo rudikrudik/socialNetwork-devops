@@ -1,21 +1,23 @@
 ---
-- name: "Deploy service -> [{{ name }}]"
-  ansible.builtin.docker_container:
-    name: "{{ name }}"
-    image: "{{ name }}"
-    recreate: true
-    ports:
-      - "8000:8000"
-    healthcheck:
-      test: "curl --fail http://localhost:8000/check || exit 1"
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
+- block:
+  - name: "Deploy service -> [{{ name }}]"
+    ansible.builtin.docker_container:
+      name: "{{ name }}"
+      image: "{{ name }}"
+      recreate: true
+      ports:
+        - "8000:8000"
+      healthcheck:
+        test: "curl --fail http://localhost:8000/check || exit 1"
+        interval: 10s
+        timeout: 5s
+        retries: 5
+        start_period: 10s
 
-#- name: "Remove not tageg images"
-#  command: 'docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
-     
+  - name: Include task -> remove docker images
+    ansible.builtin.include_tasks:
+      file: ./common_task/remove_untagged_images.yml
+
   when: 
     - inventory_hostname in groups["backend"]
   tags: "{{ name }}"

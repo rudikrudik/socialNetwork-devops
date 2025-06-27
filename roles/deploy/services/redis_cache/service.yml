@@ -1,5 +1,5 @@
 ---
-- block:  
+- block:
   - name: "Deploy service -> [{{ name }}]"
     ansible.builtin.docker_container:
       name: "{{ name }}"
@@ -14,6 +14,10 @@
         timeout: 5s
         retries: 3
         start_period: 5s
+
+  - name: Include redis warm up
+    ansible.builtin.include_tasks:
+      file: redis_warm_up.yml
 
   when: 
     - inventory_hostname in groups["redis"]

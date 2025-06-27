@@ -1,0 +1,34 @@
+---
+- name: Show message
+  ansible.builtin.debug:
+    msg: "Hello from redis-warm-up"
+
+- name: Clone git repository
+  ansible.builtin.git:
+    repo: "https://github.com/rudikrudik/socialNetwork.git"
+    dest: "{{ git_pach }}"
+    force: true
+
+- name: "Create config Service -> [Redis Warm Up] "
+  ansible.builtin.template:
+    src: "config.env.j2"
+    dest: "{{ git_pach }}/redis/config.env"
+
+- name: Build docker image for redis-warm-up
+  community.docker.docker_image:
+    name: "{{ name }}_warm_up"
+    build:
+      path: "{{ git_pach }}/redis"
+    force_source: true
+    source: build
+
+- name: Remove repository
+  ansible.builtin.file:
+    path: "{{ git_pach }}"
+    state: absent
+
+- name: "Deploy service -> [{{ name }}]"
+  ansible.builtin.docker_container:
+    name: "{{ name }}_warm_up"
+    image: "{{ name }}_warm_up"
+    recreate: true

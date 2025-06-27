@@ -1,0 +1,9 @@
+---
+- name: Try to remove untagged docker images
+  block:
+    - name: delete untagged images 
+      ansible.builtin.command: /bin/sh -c "/bin/docker rmi $(docker images --quiet --filter 'dangling=true')"
+  rescue:
+    - name: No untagged docker images
+      ansible.builtin.debug:
+        msg: Not found untagged docke images 

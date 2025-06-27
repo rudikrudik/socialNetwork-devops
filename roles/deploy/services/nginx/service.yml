@@ -10,9 +10,10 @@
         - "8888:8888"
       hostname: "{{ name }}"
 
-  - name: "Remove not tagged images"
-    shell: 'docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
-
+  - name: Include task -> remove docker images
+    ansible.builtin.include_tasks:
+      file: ./common_task/remove_untagged_images.yml
+      
   when: 
     - inventory_hostname in groups["web"]
   tags: "{{ name }}"

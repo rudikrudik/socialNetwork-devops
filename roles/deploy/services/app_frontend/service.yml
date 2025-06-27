@@ -16,9 +16,10 @@
         retries: 5
         start_period: 10s
 
-  # - name: "Remove not tageg images"
-  #   command: 'docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
-      
+  - name: Include task -> remove docker images
+    ansible.builtin.include_tasks:
+      file: ./common_task/remove_untagged_images.yml
+
   when: 
     - inventory_hostname in groups["frontend"]
   tags: "{{ name }}"
