@@ -8,6 +8,10 @@ redis_cache:
   password: admin
   db_name: 0
 
+mondo_db:
+  db: messages
+  collections: from_to
+
 app:
   key: api-key
 

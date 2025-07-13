@@ -1,0 +1,22 @@
+---
+- block: 
+  - name: "Deploy service -> [{{ name }}]"
+    ansible.builtin.docker_container:
+      name: "{{ mongoShardServerLoop.name }}"
+      image: "{{ mongoShardServerLoop.image }}"
+      recreate: true
+      ports:
+        - "{{ mongoShardServerLoop.port }}:27017"
+      hostname: "{{ mongoShardServerLoop.name }}"
+      #restart_policy: unless-stopped  
+      volumes:
+        - "~/{{ mongoShardServerLoop.name }}:/data/db"
+      command: "mongod --shardsvr --replSet shard1rs --port 27017 --dbpath /data/db"
+
+    loop: "{{ mongo_shard_servers }}"
+    loop_control:
+      loop_var: mongoShardServerLoop
+
+  when: 
+    - inventory_hostname in groups["mongoshardservers"]
+  tags: "{{ name }}"

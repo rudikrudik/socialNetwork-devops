@@ -1,0 +1,10 @@
+---
+- name: MongoDB Cluster Services
+  ansible.builtin.include_tasks:
+    file: "../services/{{ item.name }}/service.yml"
+  tags: always 
+  vars:
+    image: "{{ item.image }}"
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
+  loop: "{{ mongodb_cluster }}"

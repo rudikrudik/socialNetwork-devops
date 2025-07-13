@@ -1,0 +1,22 @@
+---
+- block: 
+  - name: "Deploy service -> [{{ name }}]"
+    ansible.builtin.docker_container:
+      name: "{{ mongoOSServerLoop.name }}"
+      image: "{{ mongoOSServerLoop.image }}"
+      recreate: true
+      ports:
+        - "{{ mongoOSServerLoop.port }}:27017"
+      hostname: "{{ mongoOSServerLoop.name }}"
+      #restart_policy: unless-stopped  
+      volumes:
+        - "~/{{ mongoOSServerLoop.name }}:/data/db"
+      command: "mongos --configdb cfgrs/192.168.0.212:10001,192.168.0.212:10002,192.168.0.212:10003 --bind_ip 0.0.0.0 --port 27017"
+
+    loop: "{{ mongo_os_servers }}"
+    loop_control:
+      loop_var: mongoOSServerLoop
+
+  when: 
+    - inventory_hostname in groups["mongorouterservers"]
+  tags: "{{ name }}"

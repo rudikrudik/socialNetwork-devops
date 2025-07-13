@@ -14,6 +14,7 @@
         timeout: 5s
         retries: 3
         start_period: 5s
+      restart_policy: unless-stopped
 
   - name: Include redis warm up
     ansible.builtin.include_tasks:

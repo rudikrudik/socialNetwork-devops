@@ -27,6 +27,7 @@
       #  -initial-cluster-token etcd-cluster-1 \
       #  -initial-cluster etcd0=http://192.168.0.198:2380 \
       #  -initial-cluster-state new
+      restart_policy: unless-stopped  
 
   when: 
     - inventory_hostname in groups["sqlbalanser"]

@@ -9,6 +9,7 @@
         - "8000:8000"
         - "8888:8888"
       hostname: "{{ name }}"
+      restart_policy: unless-stopped
 
   - name: Include task -> remove docker images
     ansible.builtin.include_tasks:

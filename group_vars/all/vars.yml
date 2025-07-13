@@ -42,6 +42,46 @@ pd_cluster:
   - name: etcd
     version: 3.5.21
 
+# HA mongoDB cluster ["Shard", "Config", "MongoOS"]
+mongodb_cluster:
+  - image: mongodb
+    name: mongo-config-server
+    version: latest
+  - image: mongodb
+    name: mongo-shard-server
+    version: latest
+  - image: mongodb
+    name: mongo-os-router
+    version: latest
+
+mongo_config_servers:
+  - image: mongo:4.4.18
+    name: mongoConfigSrvOne
+    port: 10001
+  - image: mongo:4.4.18
+    name: mongoConfigSrvTwo
+    port: 10002
+  - image: mongo:4.4.18
+    name: mongoConfigSrThree
+    port: 10003
+
+mongo_shard_servers:
+  - image: mongo:4.4.18
+    name: mongoShardSrvOne
+    port: 20001
+  - image: mongo:4.4.18
+    name: mongoShardSrvTwo
+    port: 20002
+  - image: mongo:4.4.18
+    name: mongoShardSrThree
+    port: 20003
+
+mongo_os_servers:
+  - image: mongo:4.4.18
+    name: mongoOSSrvOne
+    port: 30001
+
+
 # Vars for database # default home catalog
 db_path: /home/rudik/base-data
 sql_pach: /home/rudik/base-init
@@ -88,6 +128,14 @@ app_backend_env:
     value: "{{ redis_cache.password }}"
   - name: REDIS_DB
     value: "{{ redis_cache.db_name }}"
+  - name: MONGODB_HOST
+    value: 192.168.0.212
+  - name: MONGODB_PORT
+    value: 30001
+  - name: MONGODB_DB
+    value:  messages
+  - name: MONGODB_COLLECTIONS
+    value: from_to
 
 # Var to repository user home catalog
 git_pach: /home/rudik/repository

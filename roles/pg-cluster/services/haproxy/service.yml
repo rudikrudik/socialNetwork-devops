@@ -17,6 +17,7 @@
         - "5000:5000"
         - "5001:5001"
       hostname: "{{ name }}"
+      restart_policy: unless-stopped  
       volumes:
         - "~/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"
 
