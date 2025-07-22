@@ -7,6 +7,10 @@ deploy_services:
     version: latest
   - name: app_frontend
     version: latest
+  - name: app_notification
+    version: latest
+  - name: app_post_consumer
+    version: latest
   - name: nginx
     version: latest
   - name: redis_cache
@@ -19,6 +23,10 @@ build_services:
   - name: app_backend
     version: latest
   - name: app_frontend
+    version: latest
+  - name: app_notification
+    version: latest
+  - name: app_post_consumer
     version: latest
   - name: nginx
     version: latest
@@ -81,6 +89,10 @@ mongo_os_servers:
     name: mongoOSSrvOne
     port: 30001
 
+rabbitmq_server:
+  - name: rabbitmq
+    version: 3.10.7-management
+
 
 # Vars for database # default home catalog
 db_path: /home/rudik/base-data
@@ -93,6 +105,12 @@ db_env:
 
 redis_env:
   redis_db: "{{ redis_cache }}"
+
+rabbit_mq_env:
+  user: "{{ rabbit_mq.user }}"
+  password: "{{ rabbit_mq.password }}"
+  queue: "{{ rabbit_mq.queue }}"
+  routing_key: "{{ rabbit_mq.routing_key }}"
 
   #radis_cache:
   #user: admin
@@ -136,6 +154,23 @@ app_backend_env:
     value:  messages
   - name: MONGODB_COLLECTIONS
     value: from_to
+  - name: POST_NOTIFICATION_HOST
+    value: 192.168.0.212
+  - name: POST_NOTIFICATION_PORT
+    value: 8001
+  - name: RABBITMQ_HOST
+    value: 192.168.0.212
+  - name: RABBITMQ_PORT
+    value: 5672
+  - name: RABBITMQ_USER
+    value: "{{ rabbit_mq_env.user }}"
+  - name: RABBITMQ_PASSWORD
+    value: "{{ rabbit_mq_env.password }}"
+  - name: RABBITMQ_QUEUE
+    value: "{{ rabbit_mq_env.queue }}"
+  - name: RABBITMQ_ROUTER_KEY
+    value: "{{ rabbit_mq_env.routing_key }}"
+
 
 # Var to repository user home catalog
 git_pach: /home/rudik/repository

@@ -18,3 +18,9 @@ app:
 zabbix_agent_db:
   user: zbx_monitor
   password: zbx_monitor
+
+rabbit_mq:
+  user: admin
+  password: admin
+  queue: posts
+  routing_key: posts

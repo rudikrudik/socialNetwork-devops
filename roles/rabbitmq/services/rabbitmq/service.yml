@@ -1,0 +1,21 @@
+- block:
+  - name: "Deploy service -> [{{ name }}]"
+    ansible.builtin.docker_container:
+      name: "{{ name }}"
+      image: "{{ name }}:{{ version }}"
+      recreate: true
+      hostname: "{{ name }}"
+      env:
+        RABBITMQ_DEFAULT_USER: admin
+        RABBITMQ_DEFAULT_PASS: admin
+        RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit log_levels [{connection,error},{default,error}] disk_free_limit 2147483648
+      volumes:
+        - ./rabbitmq:/var/lib/rabbitmq
+      ports:
+        - 15672:15672
+        - 5672:5672
+      restart_policy: unless-stopped  
+
+  when: 
+    - inventory_hostname in groups["rebbitmqservers"]
+  tags: "{{ name }}"

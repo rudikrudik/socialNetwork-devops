@@ -14,6 +14,8 @@
       tags: pg-cluster
     - role: mongo-cluster
       tags: mongo-cluster
+    - role: rabbitmq
+      tags: rabbitmq
 
 # add to initdb script
 #CREATE USER zbx_monitor WITH PASSWORD '<PASSWORD>' INHERIT;

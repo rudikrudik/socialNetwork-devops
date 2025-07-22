@@ -1,0 +1,16 @@
+---
+- block:
+  - name: "Deploy service -> [{{ name }}]"
+    ansible.builtin.docker_container:
+      name: "{{ name }}"
+      image: "{{ name }}"
+      recreate: true
+      restart_policy: unless-stopped
+
+  - name: Include task -> remove docker images
+    ansible.builtin.include_tasks:
+      file: ./common_task/remove_untagged_images.yml
+
+  when: 
+    - inventory_hostname in groups["post_consumer"]
+  tags: "{{ name }}"

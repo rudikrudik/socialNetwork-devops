@@ -1,0 +1,29 @@
+---
+- block:
+  - name: Clone git repository
+    ansible.builtin.git:
+      repo: "https://github.com/rudikrudik/socialNetwork.git"
+      dest: "{{ git_pach }}"
+      force: true
+  
+  - name: Create directory to src
+    ansible.builtin.file:
+      path: "{{ def_path }}"
+      state: directory
+
+  - name: Build docker image for app_notification websocket
+    community.docker.docker_image:
+      name: "{{ name }}"
+      build:
+        path: "{{ git_pach }}/post_notification"
+      force_source: true
+      source: build
+
+  - name: Remove repository
+    ansible.builtin.file:
+      path: "{{ git_pach }}"
+      state: absent
+
+  when: 
+    - inventory_hostname in groups["post_notification"]
+  tags: "{{ name }}"
