@@ -8,6 +8,11 @@ redis_cache:
   password: admin
   db_name: 0
 
+redis_dialog:
+  user: admin
+  password: admin
+  db_name: 1
+
 mondo_db:
   db: messages
   collections: from_to

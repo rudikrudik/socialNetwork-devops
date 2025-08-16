@@ -34,10 +34,10 @@
       src: "nginx.conf"
       dest: "{{ git_pach }}/nginx.conf"
 
-  - name: Copy Nginx_stat.conf
-    ansible.builtin.copy:
-      src: "nginx_stat.conf"
-      dest: "{{ git_pach }}/nginx_stat.conf"
+  # - name: Copy Nginx_stat.conf
+  #   ansible.builtin.copy:
+  #     src: "nginx_stat.conf"
+  #     dest: "{{ git_pach }}/nginx_stat.conf"
 
   - name: Build nginx image
     community.docker.docker_image:

@@ -37,7 +37,7 @@ RUN mkdir -p /usr/local/nginx && mkdir -p /usr/local/nginx/logs && mkdir -p /etc
 WORKDIR /usr/local/nginx/
 COPY --from=build /app/src/nginx/objs/nginx .
 COPY ./nginx.conf /usr/local/nginx/nginx.conf
-COPY ./nginx_stat.conf /etc/nginx/conf.d/nginx.conf
+#COPY ./nginx_stat.conf /etc/nginx/conf.d/nginx.conf
 COPY ./src/nginx/conf/mime.types /etc/nginx/mime.types
 
 ENTRYPOINT ["./nginx", "-g", "daemon off;"]

@@ -106,6 +106,9 @@ db_env:
 redis_env:
   redis_db: "{{ redis_cache }}"
 
+redis_dialog_env:
+  redis_dialog_db: "{{ redis_dialog }}"
+
 rabbit_mq_env:
   user: "{{ rabbit_mq.user }}"
   password: "{{ rabbit_mq.password }}"
@@ -146,6 +149,16 @@ app_backend_env:
     value: "{{ redis_cache.password }}"
   - name: REDIS_DB
     value: "{{ redis_cache.db_name }}"
+  - name: REDIS_DIALOG_HOST
+    value: 192.168.0.210
+  - name: REDIS_DIALOG_LOGIN
+    value: "{{ redis_dialog.user }}"
+  - name: REDIS_DIALOG_PORT
+    value: 6380
+  - name: REDIS_DIALOG_PASSWORD
+    value: "{{ redis_dialog.password }}"
+  - name: REDIS_DIALOG_DB
+    value: "{{ redis_dialog.db_name }}"
   - name: MONGODB_HOST
     value: 192.168.0.212
   - name: MONGODB_PORT
