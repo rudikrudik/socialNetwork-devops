@@ -50,6 +50,16 @@ pd_cluster:
   - name: etcd
     version: 3.5.21
 
+# HA Backend cluster ["app""]
+backend_instanses:
+  - name: backendOne
+    port: 8001
+  - name: backendTwo
+    port: 8002
+  - name: backendThree
+    port: 8003
+
+
 # HA mongoDB cluster ["Shard", "Config", "MongoOS"]
 mongodb_cluster:
   - image: mongodb

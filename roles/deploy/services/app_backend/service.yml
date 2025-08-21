@@ -2,11 +2,11 @@
 - block:
   - name: "Deploy service -> [{{ name }}]"
     ansible.builtin.docker_container:
-      name: "{{ name }}"
+      name: "{{ backendServerLoop.name }}"
       image: "{{ name }}"
       recreate: true
       ports:
-        - "8000:8000"
+        - "{{ backendServerLoop.port }}:8000"
       restart_policy: unless-stopped  
       healthcheck:
         test: "curl --fail http://localhost:8000/check || exit 1"
@@ -14,6 +14,10 @@
         timeout: 5s
         retries: 5
         start_period: 10s
+
+    loop: "{{ backend_instanses }}"
+    loop_control:
+      loop_var: backendServerLoop    
 
   - name: Include task -> remove docker images
     ansible.builtin.include_tasks:
