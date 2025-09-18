@@ -1,25 +1,32 @@
-# ---
-# - name: "Deploy monitoring service -> [{{ name }}]"
-#   ansible.builtin.docker_container:
-#     name: "{{ name }}"
-#     image: "zabbix/{{ monitoring_services[0].name }}:{{ monitoring_services[0].version }}"
-#     state: started
-#     restart: yes
-#     recreate: true
-#     hostname: "{{ name }}ZabbixAgent"
-#     env:
-#       ZBX_HOSTNAME: "{{ name }}"
-#       ZBX_SERVER_HOST: "{{ zabbix_server }}"
-#     ports:
-#       - "10050:10050"
-#     restart_policy: unless-stopped
-#   when:  
-#     - inventory_hostname in groups["app"]
-#   tags: "{{ name }}"
-
-- name: Service "{{ name }}"
-  ansible.builtin.debug:
-    msg: "Hello from zabbix-agent-app"
-  when: 
+---
+- name: "Deploy monitoring service -> [{{ name }}]"
+  ansible.builtin.docker_container:
+    name: "{{ name }}"
+    #image: "zabbix/{{ monitoring_images.name }}:{{ monitoring_images.version }}"
+    image: zabbix/zabbix-agent2:latest
+    state: started
+    restart: yes
+    recreate: true
+    hostname: "{{ name }}ZabbixAgent"
+    env:
+      ZBX_HOSTNAME: "{{ name }}"
+      ZBX_SERVER_HOST: "{{ zabbix_server }}"
+    ports:
+      - "10050:10050"
+    restart_policy: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc:/host/proc
+      - /sys:/host/sys
+      - /:/host/rootfs
+    user: 0:0
+  when:  
     - inventory_hostname in groups["app"]
   tags: "{{ name }}"
+
+# - name: Service "{{ name }}"
+#   ansible.builtin.debug:
+#     msg: "Hello from zabbix-agent-app"
+#   when: 
+#     - inventory_hostname in groups["app"]
+#   tags: "{{ name }}"
