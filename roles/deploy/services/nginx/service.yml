@@ -7,9 +7,10 @@
       recreate: true
       ports:
         - "8000:8000"
-        - "8888:8888"
       hostname: "{{ name }}"
       restart_policy: unless-stopped
+      volumes:
+        - "{{ git_pach }}/default.conf:/etc/nginx/conf.d/default.conf:ro"
 
   - name: Include task -> remove docker images
     ansible.builtin.include_tasks:

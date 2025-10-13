@@ -7,6 +7,7 @@ ADD ./src /app/src
 WORKDIR /app/src/nginx
 RUN ./auto/configure \
         --conf-path=/usr/local/nginx/nginx.conf \
+        --with-http_headers_module \
         --with-http_addition_module \
         --with-http_auth_request_module \
         --with-http_dav_module \
